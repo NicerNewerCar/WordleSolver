@@ -7,7 +7,10 @@ class Positions:
         self.correctLetter = correctLetter
         self.avaliableLetters = avaliableLetters.copy()
     def __str__(self):
-        return str(self.nullLetters) + " " + str(self.correctLetter) + " " + str(self.avaliableLetters) + "\n"
+        if self.correctLetter == "":
+            return "(" + str(self.nullLetters) + "," + str(self.avaliableLetters) + ")\n"
+        else:
+            return "(" + str(self.correctLetter) + ")\n"
 class Word:
     def __init__(self,alphabet):
         self.word = []
@@ -53,8 +56,9 @@ def getUniqueWords():
     return unique_words
 
 
-def suggestWord(word):
-    unique_words = getUniqueWords()
+def suggestWord(word, unique_words):
+    if unique_words == []:
+        unique_words = getUniqueWords()    
     valid_words = []
     for possible_word in unique_words:
         flag = True
@@ -74,21 +78,24 @@ def suggestWord(word):
             valid_words.append(possible_word)
     return valid_words
         
-
-
-
-
 alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 word = Word(alphabet)
 updateWord(word,input("Enter a guess: "))
+suggestions = suggestWord(word,[])
 for _ in range(0,5):
-    suggestions = suggestWord(word)
     random.shuffle(suggestions)
+    removeable = []
     for sugg in suggestions:
         print(sugg)
         x = int(input("Does this word work? 1 for yes, 2 for no, 0 for won game: "))
         if x == 1:
             updateWord(word,sugg)
+            removeable.append(sugg)
             break
+        if x == 2:
+            removeable.append(sugg)
         if x == 0:
             exit()
+    for remove in removeable:
+        suggestions.remove(remove)
+    suggestions = suggestWord(word,suggestions)
