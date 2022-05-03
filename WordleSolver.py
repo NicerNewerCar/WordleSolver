@@ -1,3 +1,4 @@
+from enum import unique
 from nltk.corpus import brown, words
 import random
 
@@ -30,7 +31,7 @@ def updateWord(word, guess):
         guess = guess.lower()
         for i in range(5):
             if word.word[i].correctLetter == "":
-                correctness = int(input("Is " + guess[i] + " correct? 1 for yes, 2 for in word, 3 for incorrect: "))
+                correctness = int(input("Is " + guess[i] + " correct? 1 for yes, 2 for in word, 3 for incorrect, 0 to exit: "))
                 if correctness == 1:
                     word.word[i].correctLetter = guess[i]
                     if guess[i] in word.unsetLetters:
@@ -46,14 +47,17 @@ def updateWord(word, guess):
                             word.word[j].nullLetters.append(guess[i])
                         if guess[i] in word.word[j].avaliableLetters:
                             word.word[j].avaliableLetters.remove(guess[i])
+                if correctness == 0:
+                    exit()
 
 def getUniqueWords():
-    filtered_words = list(filter(lambda x: len(x) == 5, words.words()))
-    filtered_words = list(filter(lambda x: x.isalpha(), filtered_words))
-    filtered_words = list(map(lambda x: x.lower(), filtered_words))
-    unique_words = set(filtered_words)
-    unique_words = list(unique_words)
+    f = open("words.txt", "r")
+    unique_words = []
+    for x in f:
+        unique_words.append(x.strip())
     return unique_words
+
+
 
 
 def suggestWord(word, unique_words):
@@ -77,25 +81,14 @@ def suggestWord(word, unique_words):
         if flag:
             valid_words.append(possible_word)
     return valid_words
-        
+
+
 alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 word = Word(alphabet)
 updateWord(word,input("Enter a guess: "))
 suggestions = suggestWord(word,[])
 for _ in range(0,5):
     random.shuffle(suggestions)
-    removeable = []
-    for sugg in suggestions:
-        print(sugg)
-        x = int(input("Does this word work? 1 for yes, 2 for no, 0 for won game: "))
-        if x == 1:
-            updateWord(word,sugg)
-            removeable.append(sugg)
-            break
-        if x == 2:
-            removeable.append(sugg)
-        if x == 0:
-            exit()
-    for remove in removeable:
-        suggestions.remove(remove)
+    print(suggestions[0])
+    updateWord(word,suggestions[0])
     suggestions = suggestWord(word,suggestions)
