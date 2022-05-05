@@ -1,5 +1,9 @@
 # WordleSolver
-Basic Command line program to help solve wordle puzzels https://www.nytimes.com/games/wordle/index.html
+Simple bot to auto solve wordle puzzels https://www.nytimes.com/games/wordle/index.html
+
+To use download the appropriate packages and run in a command window
+
+Place the mouse cusror in the top left of the top left most letter block and follow the prompts on screen
 
 ## TODO:
 
