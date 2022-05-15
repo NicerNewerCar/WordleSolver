@@ -157,7 +157,7 @@ suggestions = suggestWord(word,[])
 for i in range(1,6):
     random.shuffle(suggestions)
     type(keyboard,suggestions[0])
-    time.sleep(2.5)
+    time.sleep(3)
     cor = evalRow(mp,i)
     if (all(x == 1 for x in cor)):
         exit()
